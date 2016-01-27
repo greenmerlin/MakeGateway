@@ -1,6 +1,10 @@
 #!/bin/bash
 #26/01/2016
 #greenmerlin
+#Mon copain Peko m'aide !!
+
+readonly PATH=/etc/sysctl.conf
+
 
 asksure() {
 echo -n "(Y/N)? "
@@ -17,16 +21,16 @@ return $retval
 
 
 
-# check if /etc/sysctl.conf exist and ask for a new
-if [ ! -f /etc/sysctl.conf ]
+# check if $PATH exist and ask for a new
+if [ ! -f $PATH ]
 then
-  echo -e "/etc/sysctl.conf whas not found, should i create for you ?\n"
+  echo -e $PATH whas not found, should i create for you ?
 
   if asksure; then
-    echo -e "\nOkay, performing echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf..."
-    /bin/su -c "echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf"
-    echo "Okay, performing sysctl -p /etc/sysctl.conf..."
-    /bin/su -c "sysctl -p /etc/sysctl.conf"
+    echo -e "\nOkay, performing echo 'net.ipv4.ip_forward = 1' >> $PATH..."
+    /bin/su -c "echo 'net.ipv4.ip_forward = 1' >> $PATH"
+    echo "Okay, performing sysctl -p $PATH..."
+    /bin/su -c "sysctl -p $PATH"
 else
   echo "Pfff..."
   exit 0
@@ -40,9 +44,9 @@ read -p "Second Interface(to) : " Interface2
 
 echo -e "\nOkay, performing iptables -t nat -A POSTROUTING --out-interface $Interfacer2 -j MASQUERADE"
 
-  iptables -t nat -A POSTROUTING --out-interface $Interface2 -j MASQUERADE
+  /sbin/iptables -t nat -A POSTROUTING --out-interface $Interface2 -j MASQUERADE
 
 echo -e "\nOkay, performing iptables -t nat -A FORWARD --in-interface $Interface1 -j MASQUERADE" 
 
-  iptables -A FORWARD --in-interface $Interface1 -j ACCEPT
+  /sbin/iptables -A FORWARD --in-interface $Interface1 -j ACCEPT
 
