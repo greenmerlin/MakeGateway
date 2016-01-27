@@ -3,15 +3,15 @@
 #greenmerlin
 #Mon copain Peko m'aide !!
 
-readonly PATH=/etc/sysctl.conf
+readonly SYSCTL_PATH=/etc/sysctl.conf
 
 
 asksure() {
 echo -n "(Y/N)? "
-while read -r -n 1 -s answer; do
-  if [[ $answer = [YyNn] ]]; then
-    [[ $answer = [Yy] ]] && retval=0
-    [[ $answer = [Nn] ]] && retval=1
+while read -r -n 1 -s $REPLY; do
+  if [[ $REPLY = [YyNn] ]]; then
+    [[ $REPLY = [Yy] ]] && retval=0
+    [[ $REPLY = [Nn] ]] && retval=1
     break
   fi
 done
@@ -21,16 +21,16 @@ return $retval
 
 
 
-# check if $PATH exist and ask for a new
-if [ ! -f $PATH ]
+# check if $SYSCTL_PATH exist and ask for a new
+if [ ! -f $SYSCTL_PATH ]
 then
-  echo -e $PATH whas not found, should i create for you ?
+  echo -e $SYSCTL_PATH whas not found, should i create for you ?
 
   if asksure; then
-    echo -e "\nOkay, performing echo 'net.ipv4.ip_forward = 1' >> $PATH..."
-    /bin/su -c "echo 'net.ipv4.ip_forward = 1' >> $PATH"
-    echo "Okay, performing sysctl -p $PATH..."
-    /bin/su -c "sysctl -p $PATH"
+    echo -e "\nOkay, performing echo 'net.ipv4.ip_forward = 1' >> $SYSCTL_PATH..."
+    /bin/su -c "echo 'net.ipv4.ip_forward = 1' >> $SYSCTL_PATH"
+    echo "Okay, performing sysctl -p $SYSCTL_PATH..."
+    /bin/su -c "sysctl -p $SYSCTL_PATH"
 else
   echo "Pfff..."
   exit 0
